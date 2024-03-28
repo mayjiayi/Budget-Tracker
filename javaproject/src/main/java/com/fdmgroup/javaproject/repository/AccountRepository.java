@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.fdmgroup.javaproject.model.Account;
 
 @Repository
-public interface AcountRepository extends JpaRepository<Account, Integer>{
+public interface AccountRepository extends JpaRepository<Account, Integer>{
 
 }
