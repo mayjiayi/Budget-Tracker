@@ -25,15 +25,23 @@ public class User {
 	private String password;
 	@Column(name = "EMAIL")
 	private String email;
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+	@Column(name = "LAST_NAME")
+	private String lastName;
 	
 	// constructors
-	public User(String userName, String password, String email) {
+	public User(String username, String password, String email, String firstName, String lastName) {
 		super();
-		this.username = userName;
+		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
+	
+
 	public User() {}
 	
 	// behaviors
@@ -44,7 +52,7 @@ public class User {
 	 * @param updatedUser 	user object with the same userId but with updated attributes.
 	 */
 	public void update(User updatedUser) {
-		setUserName(updatedUser.getUserName());
+		setUsername(updatedUser.getUsername());
 		setPassword(updatedUser.getPassword());
 		setEmail(updatedUser.getEmail());
 	}
@@ -56,11 +64,11 @@ public class User {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public String getUserName() {
+	public String getUsername() {
 		return username;
 	}
-	public void setUserName(String userName) {
-		this.username = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -73,5 +81,17 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

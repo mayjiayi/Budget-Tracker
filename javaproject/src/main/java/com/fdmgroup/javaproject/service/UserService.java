@@ -15,7 +15,7 @@ public class UserService {
 	private UserRepository userRepo;
 	
 	public boolean registerNewUser(User user) {
-		Optional<User> returnedUser = userRepo.findByUsername(user.getUserName());
+		Optional<User> returnedUser = userRepo.findByUsername(user.getUsername());
 		
 		if (returnedUser.isEmpty()) {
 			userRepo.save(user);
@@ -29,7 +29,13 @@ public class UserService {
 	public User findUser(int userId) {
 		Optional<User> foundUser = userRepo.findById(userId);
 		
-		return foundUser.orElse(new User("defaultusername", "defaultpassword", "defaultEmail"));
+		return foundUser.orElse(new User("defaultusername", "defaultpassword", "defaultEmail", "defaultfirstName", "defaultlastName"));
+	}
+	
+	public User findUser(String username) {
+		Optional<User> foundUser = userRepo.findByUsername(username);
+		
+		return foundUser.orElse(new User("defaultusername", "defaultpassword", "defaultEmail", "defaultfirstName", "defaultlastName"));
 	}
 	
 	public Optional<User> validatePassword(String username, String password) {
