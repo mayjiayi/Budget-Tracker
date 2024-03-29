@@ -64,7 +64,6 @@ public class UserController {
     		System.out.println("Authentication was successful!");
     		User foundUser = userService.findUser(username);
     		session.setAttribute("user", foundUser);
-//    		session.setAttribute("currentUser", username);
     		return "redirect:/dashboard";
     		
     	}

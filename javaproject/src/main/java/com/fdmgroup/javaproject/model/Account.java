@@ -1,5 +1,9 @@
 package com.fdmgroup.javaproject.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,12 +36,11 @@ public class Account {
 	private User user;
 	
 	// constructors
-	public Account(int accountID, String accountName, double balance, User user) {
+	public Account(String accountName, double balance, User user) {
 		super();
-		this.accountID = accountID;
-		this.accountName = accountName;
-		this.balance = balance;
-		this.user = user;
+		setAccountName(accountName);
+		setBalance(balance);
+		setUser(user);
 	}
 	
 	public Account () {}
@@ -73,6 +76,12 @@ public class Account {
 		return balance;
 	}
 	public void setBalance(double balance) {
+//		BigDecimal bd = BigDecimal.valueOf(balance);
+//	    bd = bd.setScale(2, RoundingMode.HALF_UP);
+//		this.balance = bd.doubleValue();
+		
+		DecimalFormat df = new DecimalFormat("#.##");      
+		balance = Double.valueOf(df.format(balance));
 		this.balance = balance;
 	}
 	public User getUser() {
