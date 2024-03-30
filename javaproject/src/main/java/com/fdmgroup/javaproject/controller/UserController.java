@@ -64,6 +64,7 @@ public class UserController {
     		System.out.println("Authentication was successful!");
     		User foundUser = userService.findUser(username);
     		session.setAttribute("user", foundUser);
+    		session.setMaxInactiveInterval(1800);
     		return "redirect:/dashboard";
     		
     	}
