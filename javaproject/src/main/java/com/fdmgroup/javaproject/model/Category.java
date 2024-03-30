@@ -45,7 +45,7 @@ public class Category {
 	 * @param updatedCategory	category object with the same categoryId but with updated attributes.
 	 */
 	public void update(Category updatedCategory) {
-		setName(updatedCategory.getName());
+		setCategoryName(updatedCategory.getCategoryName());
 	}
 	 
 	// getters and setters
@@ -55,10 +55,10 @@ public class Category {
 	public void setCategoryID(int categoryID) {
 		this.categoryID = categoryID;
 	}
-	public String getName() {
+	public String getCategoryName() {
 		return categoryName;
 	}
-	public void setName(String name) {
+	public void setCategoryName(String name) {
 		this.categoryName = name;
 	}
 }

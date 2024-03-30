@@ -1,14 +1,17 @@
 package com.fdmgroup.javaproject.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -23,11 +26,12 @@ public class Transaction {
 	
 	// attributes
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "transaction_gen")
+	@TableGenerator(name = "transaction_gen", table = "id_generator", pkColumnName = "gen_name", valueColumnName = "gen_value", allocationSize = 1)
 	private int transactionID;
 	@Column(name = "DATE")
 	@Temporal(TemporalType.DATE)
-	private Date date;
+	private LocalDate date;
 	@Column(name = "AMOUNT")
 	private double amount;
 	@Column(name = "TYPE")
@@ -49,11 +53,10 @@ public class Transaction {
 	
 	
 	// constructors
-	public Transaction(int transactionID, double amount, String type, String description,
+	public Transaction(LocalDate date, double amount, String type, String description,
 			Category category, User user, Account account) {
 		super();
-		this.transactionID = transactionID;
-		this.date = new Date();
+		this.date = date;
 		this.amount = amount;
 		this.type = type;
 		this.description = description;
@@ -88,10 +91,10 @@ public class Transaction {
 	public void setTransactionID(int transactionID) {
 		this.transactionID = transactionID;
 	}
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	public double getAmount() {

@@ -1,5 +1,6 @@
 package com.fdmgroup.javaproject.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class BudgetService {
 			return false;
 		}
 		
+	}
+	
+	public List<Budget> getAllBudgets() {
+		List<Budget> budgetList = budgetRepo.findAll();
+		return budgetList;
 	}
 
 }

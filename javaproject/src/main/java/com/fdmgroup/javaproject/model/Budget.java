@@ -1,15 +1,18 @@
 package com.fdmgroup.javaproject.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -26,19 +29,17 @@ public class Budget {
 	
 	// attributes
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "budget_gen")
+	@TableGenerator(name = "budget_gen", table = "id_generator", pkColumnName = "gen_name", valueColumnName = "gen_value", allocationSize = 1)
 	private int budgetID;
-	
-	@Column(name = "BUDGET_NAME")
-	private String budgetName;
 	
 	@Column(name = "START_DATE")
 	@Temporal(TemporalType.DATE)
-	private Date startDate;
+	private LocalDate startDate;
 	
 	@Column(name = "END_DATE")
 	@Temporal(TemporalType.DATE)
-	private Date endDate;
+	private LocalDate endDate;
 	
 	@Column(name = "TARGET_AMOUNT")
 	private double targetAmount;
@@ -55,15 +56,13 @@ public class Budget {
 	private Category category;
 	
 	// constructors
-	public Budget(int budgetID, String budgetName,Date startDate, Date endDate, double targetAmount, double actualSpending,
+	public Budget(LocalDate startDate, LocalDate endDate, double targetAmount,
 			User user, Category category) {
 		super();
-		this.budgetID = budgetID;
-		this.budgetName = budgetName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.targetAmount = targetAmount;
-		this.actualSpending = actualSpending;
+		this.actualSpending = 0;
 		this.user = user;
 		this.category = category;
 	}
@@ -78,7 +77,6 @@ public class Budget {
 	 * @param updatedBudget		budget object with the same budgetId but with updated attributes.
 	 */
 	public void update(Budget updatedBudget) {
-		setBudgetName(updatedBudget.getBudgetName());
 		setStartDate(updatedBudget.getStartDate());
 		setEndDate(updatedBudget.getEndDate());
 		setTargetAmount(updatedBudget.getTargetAmount());
@@ -94,16 +92,16 @@ public class Budget {
 	public void setBudgetID(int budgetID) {
 		this.budgetID = budgetID;
 	}
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	public double getTargetAmount() {
@@ -123,13 +121,6 @@ public class Budget {
 	}
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public String getBudgetName() {
-		return budgetName;
-	}
-	public void setBudgetName(String budgetName) {
-		this.budgetName = budgetName;
 	}
 
 	public Category getCategory() {

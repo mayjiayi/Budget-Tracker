@@ -1,5 +1,6 @@
 package com.fdmgroup.javaproject.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,10 @@ public class TransactionService {
 			System.out.println("Transaction already exists.");
 			return false;
 		}
+	}
+	
+	public List<Transaction> getAllTransactions() {
+		List<Transaction> transactionList = transactionRepo.findAll();
+		return transactionList;
 	}
 }
