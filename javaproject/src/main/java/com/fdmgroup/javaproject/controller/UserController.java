@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -63,15 +64,16 @@ public class UserController {
     	} else {
     		System.out.println("Authentication was successful!");
     		User foundUser = userService.findUser(username);
+    		int currentUserId = foundUser.getUserID();
     		session.setAttribute("user", foundUser);
     		session.setMaxInactiveInterval(1800);
-    		return "redirect:/dashboard";
+    		return "redirect:/dashboard/" + currentUserId;
     		
     	}
 	}
 	
-	@GetMapping("/dashboard") 
-	public String dashboard(HttpSession session, Model model) {
+	@GetMapping("/dashboard/{id}") 
+	public String dashboard(@PathVariable("id") long userid, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 		
 		if ( user != null) {
