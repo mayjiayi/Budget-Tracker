@@ -43,6 +43,10 @@
 	        <p>Total Income: <span th:text="${totals['Income']}">Income</span></p>
 	        <p>Total Expense: <span th:text="${totals['Expense']}">Expense</span></p>
     	</div>
+    	<div>
+		    <h3>Total Balance Across All Accounts</h3>
+		    <p>Total Balance: <span th:text="${totalBalance}">0.00</span></p>
+		</div>
 		
 		<a href="accounts">accounts</a>
 		<a href="budgets">budgets</a>

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fdmgroup.javaproject.model.Account;
 import com.fdmgroup.javaproject.model.Transaction;
 import com.fdmgroup.javaproject.model.User;
+import com.fdmgroup.javaproject.service.AccountService;
 import com.fdmgroup.javaproject.service.TransactionService;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +26,8 @@ public class DashboardController {
 	
 	@Autowired
 	private TransactionService transactionService;
+	@Autowired
+	private AccountService accountService;
 	
 	@GetMapping("/dashboard/{id}") 
 	public String dashboard(@PathVariable("id") String userid,
@@ -39,11 +43,16 @@ public class DashboardController {
 	            selectedMonth = YearMonth.of(year, month);
 	        }
 			
-			Map<String, Double> totals = transactionService.getTotalTransactionsByMonthAndType(user, selectedMonth);
+			double totalBalance = accountService.getTotalAccountBalanceForUser(user);
+			
             
+			Map<String, Double> totals = transactionService.getTotalTransactionsByMonthAndType(user, selectedMonth);
+	        
 			model.addAttribute("totals", totals);
             model.addAttribute("selectedMonth", selectedMonth);
 			model.addAttribute("user", user);
+			model.addAttribute("totalBalance", totalBalance);
+			
             return "dashboard";
         } else {
             // User is not logged in, redirect to login page

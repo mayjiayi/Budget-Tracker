@@ -48,5 +48,17 @@ public class AccountService {
 		List<Account> accountList = accountRepo.findByUser(user);
 		return accountList;
 	}
-
+	
+	public double getTotalAccountBalanceForUser(User user) {
+		List<Account> accountList = accountRepo.findByUser(user);
+		double totalBalance = 0.0;
+		for (Account account : accountList) {
+            totalBalance += account.getBalance();
+        }
+		return totalBalance;
+	}
+	
+	public void updateAccount(Account account) {
+		accountRepo.save(account);
+	}
 }

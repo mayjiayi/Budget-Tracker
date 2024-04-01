@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -61,6 +60,12 @@ public class TransactionController {
 		User user = (User) session.getAttribute("user");
 		
 		Transaction newTransaction = new Transaction(date, amount, type, description, category, user, account);
+		
+		if (type.equals("Income")) {
+			account.setBalance(account.getBalance() + amount);
+		} else if (type.equals("Expense")) {
+			account.setBalance(account.getBalance() - amount);
+		}
 		
 		if (transactionService.createTransaction(newTransaction)) {
 			return("redirect:/dashboard/transactions");
