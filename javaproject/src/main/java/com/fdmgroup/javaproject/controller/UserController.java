@@ -72,24 +72,7 @@ public class UserController {
     	}
 	}
 	
-	@GetMapping("/dashboard/{id}") 
-	public String dashboard(@PathVariable("id") long userid, HttpSession session, Model model) {
-		User user = (User) session.getAttribute("user");
+	
 		
-		if ( user != null) {
-            // User is logged in, show dashboard
-			model.addAttribute("user", user);
-            return "dashboard";
-        } else {
-            // User is not logged in, redirect to login page
-            return "redirect:/login";
-        }
-	}
-	
-//	@GetMapping("/dashboard/transactions")
-//	public
-	
-
-	
 
 }

@@ -6,6 +6,44 @@
 	</head>
 	<body>
 		<h1>Hello <span th:text="${user.firstName}">User</span>! Welcome to your dashboard!</h1>
+		
+		<form action="/dashboard/${user.userID}" method="post">
+		    <div>
+		        <label for="month">Month:</label>
+		        <select id="month" name="month">
+		            <option value="1">January</option>
+		            <option value="2">February</option>
+		            <option value="3">March</option>
+		            <option value="4">April</option>
+		            <option value="5">May</option>
+		            <option value="6">June</option>
+		            <option value="7">July</option>
+		            <option value="8">August</option>
+		            <option value="9">September</option>
+		            <option value="10">October</option>
+		            <option value="11">November</option>
+		            <option value="12">December</option>
+		        </select>
+		    </div>
+		    <div>
+		        <label for="year">Year:</label>
+		        <select id="year" name="year">
+		            <!-- Dynamically generate or hardcode year options -->
+		            <option value="2023">2023</option>
+		            <option value="2024">2024</option>
+		        </select>
+		    </div>
+		    <div>
+		        <button type="submit">View Transactions</button>
+		    </div>
+		</form>
+		
+		<div th:if="${totals}">
+	        <h3>Summary for <span th:text="${selectedMonth}">Month</span></h3>
+	        <p>Total Income: <span th:text="${totals['Income']}">Income</span></p>
+	        <p>Total Expense: <span th:text="${totals['Expense']}">Expense</span></p>
+    	</div>
+		
 		<a href="accounts">accounts</a>
 		<a href="budgets">budgets</a>
 		<a href="transactions">transactions</a>
