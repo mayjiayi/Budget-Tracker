@@ -21,14 +21,16 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	
-	@GetMapping("/accounts") 
-	public String accounts(Model model) {
-		List<Account> accounts = accountService.getAllAccounts();
+	@GetMapping("/dashboard/accounts") 
+	public String accounts(Model model, HttpSession session) {
+		
+		User user = (User) session.getAttribute("user");
+		List<Account> accounts = accountService.getAllByUser(user);
 		model.addAttribute("accounts", accounts);
 		return ("accounts");
 	}
 	
-	@PostMapping("/accounts")
+	@PostMapping("/dashboard/accounts")
 	public String createAccount(@RequestParam String accountName, 
 								@RequestParam double balance, 
 								HttpSession session) {
@@ -41,9 +43,9 @@ public class AccountController {
 		System.out.println("Account Name : " + accountName + " | Balance : " + balance + " | User : " + user.getUserID());
 		
 		if (accountService.createNewAccount(newAccount)) {
-			return("redirect:/accounts");
+			return("redirect:/dashboard/accounts");
 		} else {
-			return("redirect:/accounts");
+			return("redirect:/dashboard/accounts");
 		}
 	}
 }

@@ -31,18 +31,22 @@ public class BudgetController {
 	@Autowired
     private AccountService accountService;
 	
-	@GetMapping("budgets")
-	public String budgets(Model model) {
-		List<Budget> budgets = budgetService.getAllBudgets();
+	@GetMapping("/dashboard/budgets")
+	public String budgets(Model model, HttpSession session) {
+		
+		User user = (User) session.getAttribute("user");
+		
+		List<Budget> budgets = budgetService.getAllByUser(user);
 		List<Category> categories = categoryService.getAllCategories();
-		List<Account> accounts = accountService.getAllAccounts();
+		List<Account> accounts = accountService.getAllByUser(user);
+		
 		model.addAttribute("budgets", budgets);
 		model.addAttribute("categories", categories);
 		model.addAttribute("accounts", accounts);
 		return("budgets");
 	}
 	
-	@PostMapping("budgets")
+	@PostMapping("/dashboard/budgets")
 	public String processBudget(@RequestParam("startDate") LocalDate startDate,
             					@RequestParam("endDate") LocalDate endDate,
             					@RequestParam("targetAmount") double targetAmount,
@@ -55,9 +59,9 @@ public class BudgetController {
 		Budget newBudget = new Budget(startDate, endDate, targetAmount, user, category);
 		
 		if (budgetService.createBudget(newBudget)) {
-			return("redirect:/budgets");
+			return("redirect:/dashboard/budgets");
 		} else {
-			return("redirect:/budgets");
+			return("redirect:/dashboard/budgets");
 		}
 	}
 	

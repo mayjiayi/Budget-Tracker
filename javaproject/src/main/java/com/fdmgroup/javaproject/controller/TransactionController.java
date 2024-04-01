@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,11 +32,13 @@ public class TransactionController {
 	@Autowired
     private AccountService accountService;
 	
-	@GetMapping("transactions")
-	public String transactions(Model model) {
-		List<Transaction> transactions = transactionService.getAllTransactions();
+	@GetMapping("/dashboard/transactions")
+	public String transactions(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		
+		List<Transaction> transactions = transactionService.getAllByUser(user);
 		List<Category> categories = categoryService.getAllCategories();
-		List<Account> accounts = accountService.getAllAccounts();
+		List<Account> accounts = accountService.getAllByUser(user);
 		
 		model.addAttribute("transactions", transactions);
 		model.addAttribute("categories", categories);
@@ -44,7 +47,7 @@ public class TransactionController {
 		return("transactions");
 	}
 	
-	@PostMapping("transactions")
+	@PostMapping("/dashboard/transactions")
 	public String processTransaction( 	@RequestParam("category") int categoryID,
 										@RequestParam("amount") double amount,
 										@RequestParam("account") int accountID,
@@ -60,9 +63,9 @@ public class TransactionController {
 		Transaction newTransaction = new Transaction(date, amount, type, description, category, user, account);
 		
 		if (transactionService.createTransaction(newTransaction)) {
-			return("redirect:/transactions");
+			return("redirect:/dashboard/transactions");
 		} else {
-		return("redirect:/transactions");
+		return("redirect:/dashboard/transactions");
 		}
 	}
 	

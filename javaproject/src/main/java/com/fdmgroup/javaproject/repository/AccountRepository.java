@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.fdmgroup.javaproject.model.Account;
+import com.fdmgroup.javaproject.model.User;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer>{
-	
+	public List<Account> findByUser(User user);
 }

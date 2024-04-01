@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fdmgroup.javaproject.model.Account;
 import com.fdmgroup.javaproject.model.Category;
+import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.repository.AccountRepository;
 
 
@@ -41,6 +42,11 @@ public class AccountService {
 	public Account findById(int id) {
 		Optional<Account> account = accountRepo.findById(id);
 		return account.get();
+	}
+	
+	public List<Account> getAllByUser(User user) {
+		List<Account> accountList = accountRepo.findByUser(user);
+		return accountList;
 	}
 
 }

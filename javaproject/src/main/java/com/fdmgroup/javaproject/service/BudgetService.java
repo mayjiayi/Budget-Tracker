@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdmgroup.javaproject.model.Account;
 import com.fdmgroup.javaproject.model.Budget;
+import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.repository.BudgetRepository;
 
 @Service
@@ -30,6 +32,11 @@ public class BudgetService {
 	
 	public List<Budget> getAllBudgets() {
 		List<Budget> budgetList = budgetRepo.findAll();
+		return budgetList;
+	}
+	
+	public List<Budget> getAllByUser(User user) {
+		List<Budget> budgetList = budgetRepo.findByUser(user);
 		return budgetList;
 	}
 
