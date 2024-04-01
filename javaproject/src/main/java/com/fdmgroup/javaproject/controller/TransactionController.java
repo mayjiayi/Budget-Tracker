@@ -3,6 +3,8 @@ package com.fdmgroup.javaproject.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ import com.fdmgroup.javaproject.service.TransactionService;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * TransactionController is responsible for html related to transaction entities
+ */
 @Controller
 public class TransactionController {
 	
@@ -30,6 +35,8 @@ public class TransactionController {
     private CategoryService categoryService;
 	@Autowired
     private AccountService accountService;
+	
+	private static final Logger logger = LoggerFactory.getLogger(Transaction.class);
 	
 	@GetMapping("/dashboard/transactions")
 	public String transactions(Model model, HttpSession session) {
@@ -42,6 +49,10 @@ public class TransactionController {
 		model.addAttribute("transactions", transactions);
 		model.addAttribute("categories", categories);
 		model.addAttribute("accounts", accounts);
+		
+		logger.info("added user's transactions to model attribute");
+		logger.info("added user's categories to model attribute");
+		logger.info("added user's accounts to model attribute");
 		
 		return("transactions");
 	}
@@ -63,14 +74,18 @@ public class TransactionController {
 		
 		if (type.equals("Income")) {
 			account.setBalance(account.getBalance() + amount);
+			logger.info("Account '" + account.getAccountName() + "' balance updated in database.");
 		} else if (type.equals("Expense")) {
 			account.setBalance(account.getBalance() - amount);
+			logger.info("Account '" + account.getAccountName() + "' balance updated in database.");
 		}
 		
 		if (transactionService.createTransaction(newTransaction)) {
+			logger.info("Transaction has been created and saved in database");
 			return("redirect:/dashboard/transactions");
 		} else {
-		return("redirect:/dashboard/transactions");
+			logger.info("Unable to create transaction.");
+			return("redirect:/dashboard/transactions");
 		}
 	}
 	
