@@ -4,6 +4,8 @@ package com.fdmgroup.javaproject.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,8 @@ public class BudgetController {
 	@Autowired
     private AccountService accountService;
 	
+	private static final Logger logger = LoggerFactory.getLogger(Budget.class);
+	
 	@GetMapping("/dashboard/budgets")
 	public String budgets(Model model, HttpSession session) {
 		
@@ -43,6 +47,10 @@ public class BudgetController {
 		model.addAttribute("budgets", budgets);
 		model.addAttribute("categories", categories);
 		model.addAttribute("accounts", accounts);
+		
+		logger.info("added user's budgets in model attribute");
+		logger.info("added user's categories in model attribute");
+		logger.info("added user's accounts in model attribute");
 		return("budgets");
 	}
 	
@@ -59,8 +67,10 @@ public class BudgetController {
 		Budget newBudget = new Budget(startDate, endDate, targetAmount, user, category);
 		
 		if (budgetService.createBudget(newBudget)) {
+			logger.info("Budget for category '" + category.getCategoryName() + "' has been created and saved in database");
 			return("redirect:/dashboard/budgets");
 		} else {
+			logger.warn("Unable to create budget for category '" + category.getCategoryName());
 			return("redirect:/dashboard/budgets");
 		}
 	}

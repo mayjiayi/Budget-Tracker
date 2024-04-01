@@ -1,7 +1,6 @@
 package com.fdmgroup.javaproject.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -122,11 +121,9 @@ public class Budget {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	public Category getCategory() {
 		return category;
 	}
-
 	public void setCategory(Category category) {
 		this.category = category;
 	}
