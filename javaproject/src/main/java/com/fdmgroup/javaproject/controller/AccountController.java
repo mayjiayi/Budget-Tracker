@@ -2,6 +2,8 @@ package com.fdmgroup.javaproject.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,37 +17,42 @@ import com.fdmgroup.javaproject.service.AccountService;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * AccountController is responsible for returning html templates for anything
+ * account entity related
+ */
 @Controller
 public class AccountController {
-	
+
 	@Autowired
 	private AccountService accountService;
-	
-	@GetMapping("/dashboard/accounts") 
+	private static final Logger logger = LoggerFactory.getLogger(Account.class);
+
+	@GetMapping("/dashboard/accounts")
 	public String accounts(Model model, HttpSession session) {
-		
+
 		User user = (User) session.getAttribute("user");
 		List<Account> accounts = accountService.getAllByUser(user);
 		model.addAttribute("accounts", accounts);
+		logger.info("added user's accounts in model attribute");
 		return ("accounts");
 	}
-	
+
 	@PostMapping("/dashboard/accounts")
-	public String createAccount(@RequestParam String accountName, 
-								@RequestParam double balance, 
-								HttpSession session) {
-		System.out.println("Creating account...");
-		System.out.println("Account Name : " + accountName + " | Balance : " + balance);
-		
+	public String createAccount(@RequestParam String accountName, @RequestParam double balance, HttpSession session) {
+		logger.info("Creating account...");
+
 		User user = (User) session.getAttribute("user");
-		
+
 		Account newAccount = new Account(accountName, balance, user);
-		System.out.println("Account Name : " + accountName + " | Balance : " + balance + " | User : " + user.getUserID());
-		
+		logger.info("Account Name : " + accountName + " | Balance : " + balance + " | User : " + user.getUserID());
+
 		if (accountService.createNewAccount(newAccount)) {
-			return("redirect:/dashboard/accounts");
+			logger.info("Account '" + accountName + "' created and saved in the database");
+			return ("redirect:/dashboard/accounts");
 		} else {
-			return("redirect:/dashboard/accounts");
+			logger.info("Unable to create '" + accountName);
+			return ("redirect:/dashboard/accounts");
 		}
 	}
 }
