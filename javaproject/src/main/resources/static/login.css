@@ -32,6 +32,10 @@ header {
   
 } 
 
+.error-message {
+	color: red;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;

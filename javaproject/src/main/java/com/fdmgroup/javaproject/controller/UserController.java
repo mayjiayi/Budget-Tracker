@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,10 +59,12 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public String processLogin(@RequestParam String username, @RequestParam String password, HttpSession session) {
+	public String processLogin(@RequestParam String username, @RequestParam String password, HttpSession session,
+			Model model) {
 		Optional<User> targetUser = userService.validatePassword(username, password);
 		if (targetUser.isEmpty()) {
 			logger.warn("Authentication failed for User '" + username + "'.");
+			model.addAttribute("error", true);
 			return "login";
 		} else {
 			logger.info("Authentication was successful for User '" + username + "'.");
