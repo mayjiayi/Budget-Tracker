@@ -2,20 +2,59 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Registration Page</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Registration</title>
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  		<link rel="stylesheet" href="register.css">
 	</head>
+	
 	<body>
-		<h1>Registration Form</h1>
-		<!--  Try changing the method to 'get' below -->
-		<form method="post" action="register">
-			<input type="text" name="firstName" placeholder="First Name">
-			<input type="text" name="lastName" placeholder="Last Name">
-			<input type="text" name="username" placeholder="Username">
-			<input type="password" name="password" placeholder="Password">
-			<input type="text" name="email" placeholder="Email">
-			<input type="submit" value="Register">
+	
+	<div class="back-to-home-link">
+		<a href="/">
+			<img src="logo-transparent.png">
+		</a>
+	</div>
+	
+	<div class="container">
+		<header>
+			<h1>Registration Form</h1>
+		</header>
+		
+		<form method="post" action="register" class= "register-form">
+			<div class="form-group">
+				<label for="first-name">First Name:</label>
+				<input type="text" name="firstName" placeholder="First Name" required>
+			</div>
+			<div class="form-group">
+				<label for="last-name">Last Name:</label>
+				<input type="text" name="lastName" placeholder="Last Name" required>
+			</div>
+			<div class="form-group">
+				<label for="username">Username:</label>
+				<input type="text" name="username" placeholder="Username" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" name="password" placeholder="Password" required>
+			</div>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="text" name="email" placeholder="someone@gmail.com" required>
+			</div>
+			<div class="form-submit">
+				<input type="submit" value="Register" required>
+			</div>					
 		</form>
 		
+		<div class="login-link">
+		      <p>Already have an account? <a href="login">Login here</a></p>
+		</div>
+		
+	</div>
 		
 	</body>
 </html>
