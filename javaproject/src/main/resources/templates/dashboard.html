@@ -2,54 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Dashboard</title>
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  		<link rel="stylesheet" href="/dashboard.css">
+  		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  		
 	</head>
 	<body>
-		<h1>Hello <span th:text="${user.firstName}">User</span>! Welcome to your dashboard!</h1>
-		
-		<form action="/dashboard/${user.userID}" method="post">
-		    <div>
-		        <label for="month">Month:</label>
-		        <select id="month" name="month">
-		            <option value="1">January</option>
-		            <option value="2">February</option>
-		            <option value="3">March</option>
-		            <option value="4">April</option>
-		            <option value="5">May</option>
-		            <option value="6">June</option>
-		            <option value="7">July</option>
-		            <option value="8">August</option>
-		            <option value="9">September</option>
-		            <option value="10">October</option>
-		            <option value="11">November</option>
-		            <option value="12">December</option>
-		        </select>
-		    </div>
-		    <div>
-		        <label for="year">Year:</label>
-		        <select id="year" name="year">
-		            <!-- Dynamically generate or hardcode year options -->
-		            <option value="2023">2023</option>
-		            <option value="2024">2024</option>
-		        </select>
-		    </div>
-		    <div>
-		        <button type="submit">View Transactions</button>
-		    </div>
-		</form>
-		
-		<div th:if="${totals}">
-	        <h3>Summary for <span th:text="${selectedMonth}">Month</span></h3>
-	        <p>Total Income: <span th:text="${totals['Income']}">Income</span></p>
-	        <p>Total Expense: <span th:text="${totals['Expense']}">Expense</span></p>
+	<input type="checkbox" id="check">
+	<label for="check">
+		<i class="fa-solid fa-bars" id="btn"></i>
+		<i class="fa-solid fa-times" id="cancel"></i>
+	</label>
+		<div id="sidebar" class="sidebar">
+	        <header>Overview</header>
+	        <ul>
+	            <li><a th:href="@{/dashboard/{id}(id=${session.user.userID})}"><i class="fa-regular fa-clipboard"></i>Dashboard</a></li>
+	            <li><a href="/dashboard/transactions"><i class="fa-solid fa-list"></i>Transactions</a></li>
+	            <li><a href="/dashboard/accounts"><i class="fa-solid fa-wallet"></i>Accounts</a></li>
+	            <li><a href="/dashboard/budgets"><i class="fa-solid fa-calculator"></i>Budgets</a></li>
+	        </ul>
     	</div>
-    	<div>
-		    <h3>Total Balance Across All Accounts</h3>
-		    <p>Total Balance: <span th:text="${totalBalance}">0.00</span></p>
-		</div>
+    	
+    	
+    	
+    	<section>
+	
+			<h1>Hello, <span th:text="${user.firstName}">User</span>! Welcome to your dashboard!</h1>
+			
+			<form action="/dashboard/${user.userID}" method="post">
+			    <div>
+			        <label for="month">Month:</label>
+			        <select id="month" name="month">
+			            <option value="1">January</option>
+			            <option value="2">February</option>
+			            <option value="3">March</option>
+			            <option value="4">April</option>
+			            <option value="5">May</option>
+			            <option value="6">June</option>
+			            <option value="7">July</option>
+			            <option value="8">August</option>
+			            <option value="9">September</option>
+			            <option value="10">October</option>
+			            <option value="11">November</option>
+			            <option value="12">December</option>
+			        </select>
+			    </div>
+			    <div>
+			        <label for="year">Year:</label>
+			        <select id="year" name="year">
+			            <!-- Dynamically generate or hardcode year options -->
+			            <option value="2023">2023</option>
+			            <option value="2024">2024</option>
+			        </select>
+			    </div>
+			    <div>
+			        <button type="submit">View Transactions</button>
+			    </div>
+			</form>
+			
+			<div th:if="${totals}">
+		        <h3>Summary for <span th:text="${selectedMonth}">Month</span></h3>
+		        <p>Total Income: <span th:text="${totals['Income']}">Income</span></p>
+		        <p>Total Expense: <span th:text="${totals['Expense']}">Expense</span></p>
+	    	</div>
+	    	<div>
+			    <h3>Total Balance Across All Accounts</h3>
+			    <p>Total Balance: <span th:text="${totalBalance}">0.00</span></p>
+			</div>
+			
+			<a href="accounts">accounts</a>
+			<a href="budgets">budgets</a>
+			<a href="transactions">transactions</a>
+			<button onclick="toggleSidebar()">Toggle Sidebar</button>
+		</section>
 		
-		<a href="accounts">accounts</a>
-		<a href="budgets">budgets</a>
-		<a href="transactions">transactions</a>
+	<script src="/dashboard.js"></script>
 	</body>
 </html>
