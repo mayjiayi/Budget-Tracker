@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fdmgroup.javaproject.model.Account;
+import com.fdmgroup.javaproject.model.Budget;
 import com.fdmgroup.javaproject.model.Category;
 import com.fdmgroup.javaproject.model.Transaction;
 import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.service.AccountService;
+import com.fdmgroup.javaproject.service.BudgetService;
 import com.fdmgroup.javaproject.service.CategoryService;
 import com.fdmgroup.javaproject.service.TransactionService;
 
@@ -35,6 +37,8 @@ public class TransactionController {
 	private CategoryService categoryService;
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private BudgetService budgetService;
 
 	private static final Logger logger = LoggerFactory.getLogger(Transaction.class);
 
@@ -84,6 +88,15 @@ public class TransactionController {
 		} else if (type.equals("Expense")) {
 			account.setBalance(account.getBalance() - amount);
 			logger.info("Account '" + account.getAccountName() + "' balance updated in database.");
+		}
+
+		List<Budget> budget = budgetService.findBudgetByCategoryAndDate(category, date);
+		if (budget != null && date.compareTo(budget.get(0).getStartDate()) >= 0
+				&& date.compareTo(budget.get(0).getEndDate()) <= 0) {
+
+			budget.get(0).setActualSpending(budget.get(0).getActualSpending() + amount);
+			logger.info("Budget for category '" + category.getCategoryName() + "' updated in database.");
+
 		}
 
 		if (transactionService.createTransaction(newTransaction)) {

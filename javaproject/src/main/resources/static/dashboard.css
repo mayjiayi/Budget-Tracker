@@ -6,6 +6,13 @@ body {
 	padding: 0;
 	list-style: none;
 	text-decoration: none;
+	box-sizing: border-box;
+}
+
+header {
+	line-height: 70px;
+	color: grey;
+	background-color: grey;
 }
 
 .sidebar {
@@ -58,8 +65,8 @@ label #btn, label #cancel {
 }
 
 label #btn{
-	left: 40px;
-	top: 25px;
+	left: 20px;
+	top: 10px;
 	font-size: 35px;
 	color: black;
 	padding: 6px 12px;
@@ -97,6 +104,78 @@ label #cancel{
 
 section {
 	transition: all .5s;
+}
+
+section {
+	padding: 2rem;
+}
+
+form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+form input, button, select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	height: 42px;
+	font-family: 'Rubik', sans-serif;
+	font-size: 1rem;
+}
+
+form button {
+	background-color: grey;
+	color: white;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+	cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #c0c0c0;
+}
+
+
+
+form label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+form div:first-child {
+	flex-basis: 100%;
+}
+
+form div:nth-child(n + 1){
+	flex-basis: calc(50% - 5px);
+}
+
+h1 {
+	font-size: 3rem;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.summary-section {
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    margin-bottom: 10px;
+}
+
+.total-balance-section {
+    margin-top: 20px;
 }
 
 

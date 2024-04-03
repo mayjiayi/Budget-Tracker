@@ -15,4 +15,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Integer> {
 	public List<Budget> findByUser(User user);
 
 	public List<Budget> findByStartDateBetween(LocalDate startDate, LocalDate endDate);
+
+	public List<Budget> findByCategoryCategoryIDAndStartDateLessThanEqualAndEndDateGreaterThanEqual(int categoryID,
+			LocalDate startDate, LocalDate endDate);
 }

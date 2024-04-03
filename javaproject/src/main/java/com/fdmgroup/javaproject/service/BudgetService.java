@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdmgroup.javaproject.model.Budget;
+import com.fdmgroup.javaproject.model.Category;
 import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.repository.BudgetRepository;
 
@@ -74,4 +75,8 @@ public class BudgetService {
 		return budgetRepo.findByStartDateBetween(startDate, endDate);
 	}
 
+	public List<Budget> findBudgetByCategoryAndDate(Category category, LocalDate date) {
+		return budgetRepo.findByCategoryCategoryIDAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
+				category.getCategoryID(), date, date);
+	}
 }

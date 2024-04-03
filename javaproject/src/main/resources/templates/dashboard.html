@@ -28,12 +28,30 @@
 	        </ul>
     	</div>
     	
-    	
+    	<header> header </header>
     	
     	<section>
 	
-			<h1>Hello, <span th:text="${user.firstName}">User</span>! Welcome to your dashboard!</h1>
-			
+			<div class="dashboard-header">
+                <h1>Hello, <span th:text="${user.firstName}">User</span>!</h1> 
+                <h3>Welcome to your dashboard!</h3>
+            </div>
+            
+            <div th:if="${totals}" class="summary-section">
+                <h3>Summary for <span th:text="${selectedMonth}">Month</span></h3>
+                <div class="summary-item">
+                    <p>Total Income: <span th:text="${totals['Income']}">Income</span></p>
+                </div>
+                <div class="summary-item">
+                    <p>Total Expense: <span th:text="${totals['Expense']}">Expense</span></p>
+                </div>
+            </div>
+            
+            <div class="total-balance-section">
+                <h3>Total Balance Across All Accounts</h3>
+                <p>Total Balance: <span th:text="${totalBalance}">0.00</span></p>
+            </div>
+            
 			<form action="/dashboard/${user.userID}" method="post">
 			    <div>
 			        <label for="month">Month:</label>
@@ -65,20 +83,6 @@
 			    </div>
 			</form>
 			
-			<div th:if="${totals}">
-		        <h3>Summary for <span th:text="${selectedMonth}">Month</span></h3>
-		        <p>Total Income: <span th:text="${totals['Income']}">Income</span></p>
-		        <p>Total Expense: <span th:text="${totals['Expense']}">Expense</span></p>
-	    	</div>
-	    	<div>
-			    <h3>Total Balance Across All Accounts</h3>
-			    <p>Total Balance: <span th:text="${totalBalance}">0.00</span></p>
-			</div>
-			
-			<a href="accounts">accounts</a>
-			<a href="budgets">budgets</a>
-			<a href="transactions">transactions</a>
-			<button onclick="toggleSidebar()">Toggle Sidebar</button>
 		</section>
 	</body>
 </html>
