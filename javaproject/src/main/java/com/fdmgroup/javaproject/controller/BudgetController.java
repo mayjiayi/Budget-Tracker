@@ -1,6 +1,5 @@
 package com.fdmgroup.javaproject.controller;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,55 +24,59 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class BudgetController {
-	
+
 	@Autowired
 	private BudgetService budgetService;
 	@Autowired
-    private CategoryService categoryService;
+	private CategoryService categoryService;
 	@Autowired
-    private AccountService accountService;
-	
+	private AccountService accountService;
+
 	private static final Logger logger = LoggerFactory.getLogger(Budget.class);
-	
+
 	@GetMapping("/dashboard/budgets")
-	public String budgets(Model model, HttpSession session) {
-		
+	public String budgets(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year,
+			Model model, HttpSession session) {
+
 		User user = (User) session.getAttribute("user");
-		
-		List<Budget> budgets = budgetService.getAllByUser(user);
+		List<Budget> budgets;
+		if (month != null && year != null) {
+			budgets = budgetService.getBudgetsByMonthAndYear(month, year);
+		} else {
+			budgets = budgetService.getAllByUser(user);
+		}
+
 		List<Category> categories = categoryService.getAllCategories();
 		List<Account> accounts = accountService.getAllByUser(user);
-		
+
 		model.addAttribute("budgets", budgets);
 		model.addAttribute("categories", categories);
 		model.addAttribute("accounts", accounts);
-		
+
 		logger.info("added user's budgets in model attribute");
 		logger.info("added user's categories in model attribute");
 		logger.info("added user's accounts in model attribute");
-		return("budgets");
+		return ("budgets");
 	}
-	
+
 	@PostMapping("/dashboard/budgets")
 	public String processBudget(@RequestParam("startDate") LocalDate startDate,
-            					@RequestParam("endDate") LocalDate endDate,
-            					@RequestParam("targetAmount") double targetAmount,
-            					@RequestParam("category") int categoryId,
-            					HttpSession session) {
-		
+			@RequestParam("endDate") LocalDate endDate, @RequestParam("targetAmount") double targetAmount,
+			@RequestParam("category") int categoryId, HttpSession session) {
+
 		Category category = categoryService.findById(categoryId);
 		User user = (User) session.getAttribute("user");
-		
+
 		Budget newBudget = new Budget(startDate, endDate, targetAmount, user, category);
-		
+
 		if (budgetService.createBudget(newBudget)) {
-			logger.info("Budget for category '" + category.getCategoryName() + "' has been created and saved in database");
-			return("redirect:/dashboard/budgets");
+			logger.info(
+					"Budget for category '" + category.getCategoryName() + "' has been created and saved in database");
+			return ("redirect:/dashboard/budgets");
 		} else {
 			logger.warn("Unable to create budget for category '" + category.getCategoryName());
-			return("redirect:/dashboard/budgets");
+			return ("redirect:/dashboard/budgets");
 		}
 	}
-	
 
 }

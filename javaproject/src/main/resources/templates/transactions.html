@@ -53,6 +53,9 @@
   	            </tr>
   	        </thead>
   	        <tbody>
+                <tr th:if="${#lists.isEmpty(transactions)}">
+                    <td colspan="4">No transactions available.</td>
+                </tr>
   	            <!-- Iterate over accounts data and display each account -->
   	            <tr th:each="transaction : ${transactions}" th:data-account-id="${transaction.account.accountID}">
   	                <td th:text="${transaction.account.accountName}">Account</td>
