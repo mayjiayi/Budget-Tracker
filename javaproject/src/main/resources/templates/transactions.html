@@ -3,75 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <title>Transactions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  	<link rel="stylesheet" href="/transactions.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-	<h1>User Transactions</h1>
-		<table>
-	        <thead>
-	            <tr>
-	                <th>Account</th>
-	                <th>Category</th>
-	                <th>Amount</th>
-	                <th>Date</th>
-	                <!-- Add more table headers if needed -->
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <!-- Iterate over accounts data and display each account -->
-	            <tr th:each="transaction : ${transactions}">
-	                <td th:text="${transaction.account.accountName}">Account</td>
-	                <td th:text="${transaction.category.categoryName}">Category</td>
-	                <td th:text="${transaction.amount}">Amount</td>
-	                <td th:text="${transaction.date}">Date</td>
-	                <!-- Add more table cells for additional account properties -->
-	            </tr>
-	        </tbody>
-    	</table>
-    <h2>Add New Transaction</h2>
-    <form action="transactions"  method="post">
-    	<div>
+  <input type="checkbox" id="check">
+  <label for="check">
+    <i class="fa-solid fa-bars" id="btn"></i>
+    <i class="fa-solid fa-times" id="cancel"></i>
+  </label>
+    <div id="sidebar" class="sidebar">
+          <header>Overview</header>
+          <ul>
+              <li><a th:href="@{/dashboard/{id}(id=${session.user.userID})}"><i class="fa-regular fa-clipboard"></i>Dashboard</a></li>
+              <li><a href="/dashboard/transactions"><i class="fa-solid fa-list"></i>Transactions</a></li>
+              <li><a href="/dashboard/accounts"><i class="fa-solid fa-wallet"></i>Accounts</a></li>
+              <li><a href="/dashboard/budgets"><i class="fa-solid fa-calculator"></i>Budgets</a></li>
+          </ul>
+      </div>
+  
+  <header> header </header>
+  <section>
+  
+    <div class="transaction-list">
+  	<h1>Your Transactions</h1>
+  
+          <h5>Filter By:</h5>
+          <form action="transactions" method="get">
+              <select name="accountId" onchange="this.form.submit()">
+                  <option th:value=0>All Accounts</option>
+                  <option th:each="account : ${accounts}"
+                          th:value="${account.accountID}"
+                          th:selected="${account.accountID == selectedAccountId}"
+                          th:text="${account.accountName}"></option>
+              </select>
+          </form>
+  
+  		<table>
+  	        <thead>
+  	            <tr>
+  	                <th>Account</th>
+  	                <th>Category</th>
+  	                <th>Amount</th>
+  	                <th>Date</th>
+  	                <!-- Add more table headers if needed -->
+  	            </tr>
+  	        </thead>
+  	        <tbody>
+  	            <!-- Iterate over accounts data and display each account -->
+  	            <tr th:each="transaction : ${transactions}" th:data-account-id="${transaction.account.accountID}">
+  	                <td th:text="${transaction.account.accountName}">Account</td>
+  	                <td th:text="${transaction.category.categoryName}">Category</td>
+  	                <td th:text="${transaction.amount}">Amount</td>
+  	                <td th:text="${transaction.date}">Date</td>
+  	                <!-- Add more table cells for additional account properties -->
+  	            </tr>
+  	        </tbody>
+      	</table>
+    
+    </div>
+    
+    <div class="add-transactions">
+      <h3>Add New Transaction</h3>
+        <form id="transaction-form" action="transactions"  method="post">
+        
+      	<div>
             <label for="category">Category:</label>
-            <select id="category" name="category" required>
+              <select id="category" name="category" required>
                 <option value="">Choose...</option>
-                <!-- Iterate over categories and populate dropdown options -->
                 <option th:each="cat : ${categories}" th:value="${cat.categoryID}" th:text="${cat.categoryName}"></option>
-            </select>
-        </div>
-        <div>
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" name="amount" step="0.01" th:value="*{amount}" required>
-        </div>
-        <div>
-        	<label for="account">Account:</label>
-    		<select id="account" name="account" required>
-		        <option value="">Select Account</option>
-		        <option th:each="account : ${accounts}" 
-		                th:value="${account.accountID}" 
-		                th:text="${account.accountName}">
-		        </option>
-    		</select>
-        
-        </div>
-        <div>
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
-        </div>
-        
-        <div>
-            <label for="type">Type:</label>
-            <select id="type" name="type" th:value="*{type}" required>
-                <option value="">Choose...</option>
-                <option value="Income">Income</option>
-                <option value="Expense">Expense</option>
-            </select>
-        </div>
-        <div>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" th:value="*{description}">
-        </div>
-        <div>
-            <button type="submit">Submit</button>
-        </div>
-    </form>
+              </select>
+          </div>
+          
+          <div>
+              <label for="amount">Amount:</label>
+              <input type="number" id="amount" name="amount" step="0.01" value="0" min="0.01" required>
+          </div>
+          
+          <div>
+              <label for="date">Date:</label>
+              <input type="date" id="date" name="date" required>
+          </div>
+          
+          <div>
+              <label for="type">Type:</label>
+              <select id="type" name="type" th:value="*{type}" required>
+                  <option value="">Choose...</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
+              </select>
+          </div>
+          
+          <div>
+          	<label for="account">Account:</label>
+      		<select id="account" name="account" required>
+  		        <option value="">Select Account</option>
+  		        <option th:each="account : ${accounts}" 
+  		                th:value="${account.accountID}" 
+  		                th:text="${account.accountName}">
+  		        </option>
+      		</select>
+          </div>
+          
+          <div>
+              <label for="description">Description:</label>
+              <input type="text" id="description" name="description" th:value="*{description}">
+          </div>
+          
+          <div class="button-container">
+              <button type="submit">Submit</button>
+          </div>
+      </form>
+    </div>
+    </section>	
 </body>
 </html>

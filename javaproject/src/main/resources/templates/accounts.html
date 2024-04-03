@@ -3,9 +3,32 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Accounts</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/accounts.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	</head>
 	<body>
-		<h1>User Account</h1>
+        <input type="checkbox" id="check">
+        <label for="check">
+          <i class="fa-solid fa-bars" id="btn"></i>
+          <i class="fa-solid fa-times" id="cancel"></i>
+        </label>
+        <div id="sidebar" class="sidebar">
+          <header>Overview</header>
+          <ul>
+              <li><a th:href="@{/dashboard/{id}(id=${session.user.userID})}"><i class="fa-regular fa-clipboard"></i>Dashboard</a></li>
+              <li><a href="/dashboard/transactions"><i class="fa-solid fa-list"></i>Transactions</a></li>
+              <li><a href="/dashboard/accounts"><i class="fa-solid fa-wallet"></i>Accounts</a></li>
+              <li><a href="/dashboard/budgets"><i class="fa-solid fa-calculator"></i>Budgets</a></li>
+          </ul>
+        </div>
+  
+        <header> header </header>
+  
+		<section>
+        <h1>User Account</h1>
 		<table>
 	        <thead>
 	            <tr>
@@ -16,23 +39,42 @@
 	        </thead>
 	        <tbody>
 	            <!-- Iterate over accounts data and display each account -->
-	            <tr th:each="account : ${accounts}">
+	            <tr th:each="account : ${accounts}" th:attr="onclick='redirectToTransactions(\'' + ${account.accountID} + '\')'">
 	                <td th:text="${account.accountName}">Account Name</td>
 	                <td th:text="${account.balance}">Balance</td>
 	                <!-- Add more table cells for additional account properties -->
 	            </tr>
 	        </tbody>
     	</table>
-    
+        <div class="create-account">
 		<h1>Create account</h1>
 		<!--  Try changing the method to 'get' below -->
-		<form method="post" action="accounts">
+		<form id="account-form" method="post" action="accounts">
 			<!-- Use the 'placeholder' tag to be more helpful -->
-			<input type="text" name="accountName" placeholder="AccountName" required>
-			<!-- Better to use input type="password" rather than "text" -->
-			<input type="number" step="0.01" name="balance" placeholder="Balance" required>
+          <div>
+            <label for="accountName">Account Name:</label>
+            <input type="text" id="accountName" name="accountName" placeholder="Account Name" required>
+          </div>
+          
+          <div>
+            <label for="accountName">Balance:</label>
+            <input type="number" step="0.01" name="balance" placeholder="Balance" required>
+          </div>
+          
+          <div class="button-container">
+
+              <button type="submit">Create</button>
+          </div>
+          
 			
-			<input type="submit" value="create">
 		</form>
+        </div>
+    </section>
+    
+    <script>
+        function redirectToTransactions(accountId) {
+            window.location.href = '/dashboard/transactions?accountId=' + accountId;
+        }
+    </script>
 	</body>
 </html>

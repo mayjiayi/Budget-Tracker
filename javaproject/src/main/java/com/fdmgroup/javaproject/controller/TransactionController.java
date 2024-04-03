@@ -28,50 +28,56 @@ import jakarta.servlet.http.HttpSession;
  */
 @Controller
 public class TransactionController {
-	
+
 	@Autowired
 	private TransactionService transactionService;
 	@Autowired
-    private CategoryService categoryService;
+	private CategoryService categoryService;
 	@Autowired
-    private AccountService accountService;
-	
+	private AccountService accountService;
+
 	private static final Logger logger = LoggerFactory.getLogger(Transaction.class);
-	
+
 	@GetMapping("/dashboard/transactions")
-	public String transactions(Model model, HttpSession session) {
+	public String transactions(@RequestParam(name = "accountId", required = false) Integer accountId, Model model,
+			HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		
-		List<Transaction> transactions = transactionService.getAllByUser(user);
+		List<Transaction> transactions;
+
+		if (accountId != null) {
+			Account targetAccount = accountService.findById(accountId);
+			transactions = transactionService.findTransactionsForAccount(targetAccount);
+		} else {
+			transactions = transactionService.getAllByUser(user);
+		}
+
 		List<Category> categories = categoryService.getAllCategories();
 		List<Account> accounts = accountService.getAllByUser(user);
-		
+
 		model.addAttribute("transactions", transactions);
 		model.addAttribute("categories", categories);
 		model.addAttribute("accounts", accounts);
-		
+
 		logger.info("added user's transactions to model attribute");
 		logger.info("added user's categories to model attribute");
 		logger.info("added user's accounts to model attribute");
-		
-		return("transactions");
+
+		return ("transactions");
 	}
-	
+
 	@PostMapping("/dashboard/transactions")
-	public String processTransaction( 	@RequestParam("category") int categoryID,
-										@RequestParam("amount") double amount,
-										@RequestParam("account") int accountID,
-										@RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yy") LocalDate date,
-										@RequestParam("type") String type,
-										@RequestParam(value = "description", required = false) String description,
-										HttpSession session) {
-		
+	public String processTransaction(@RequestParam("category") int categoryID, @RequestParam("amount") double amount,
+			@RequestParam("account") int accountID,
+			@RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yy") LocalDate date,
+			@RequestParam("type") String type,
+			@RequestParam(value = "description", required = false) String description, HttpSession session) {
+
 		Category category = categoryService.findById(categoryID);
 		Account account = accountService.findById(accountID);
 		User user = (User) session.getAttribute("user");
-		
+
 		Transaction newTransaction = new Transaction(date, amount, type, description, category, user, account);
-		
+
 		if (type.equals("Income")) {
 			account.setBalance(account.getBalance() + amount);
 			logger.info("Account '" + account.getAccountName() + "' balance updated in database.");
@@ -79,15 +85,14 @@ public class TransactionController {
 			account.setBalance(account.getBalance() - amount);
 			logger.info("Account '" + account.getAccountName() + "' balance updated in database.");
 		}
-		
+
 		if (transactionService.createTransaction(newTransaction)) {
 			logger.info("Transaction has been created and saved in database");
-			return("redirect:/dashboard/transactions");
+			return ("redirect:/dashboard/transactions");
 		} else {
 			logger.info("Unable to create transaction.");
-			return("redirect:/dashboard/transactions");
+			return ("redirect:/dashboard/transactions");
 		}
 	}
-	
-	
+
 }
