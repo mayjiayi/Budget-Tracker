@@ -2,6 +2,7 @@ package com.fdmgroup.javaproject.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,12 +99,12 @@ public class TransactionController {
 		}
 
 		List<Budget> budget = budgetService.findBudgetByCategoryAndDate(category, date);
-		if (budget != null && date.compareTo(budget.get(0).getStartDate()) >= 0
-				&& date.compareTo(budget.get(0).getEndDate()) <= 0) {
+		if (!budget.isEmpty()) {
+			if (date.compareTo(budget.get(0).getStartDate()) >= 0 && date.compareTo(budget.get(0).getEndDate()) <= 0) {
 
-			budget.get(0).setActualSpending(budget.get(0).getActualSpending() + amount);
-			logger.info("Budget for category '" + category.getCategoryName() + "' updated in database.");
-
+				budget.get(0).setActualSpending(budget.get(0).getActualSpending() + amount);
+				logger.info("Budget for category '" + category.getCategoryName() + "' updated in database.");
+			}
 		}
 
 		if (transactionService.createTransaction(newTransaction)) {
@@ -115,4 +116,37 @@ public class TransactionController {
 		}
 	}
 
+	@PostMapping("/dashboard/transactions/delete")
+	public String deleteTransaction(int transactionId) {
+		Optional<Transaction> transaction = transactionService.findTransactionById(transactionId);
+		if (transaction.isPresent()) {
+
+			Transaction targetTransaction = transaction.get();
+			Account targetAccount = targetTransaction.getAccount();
+			List<Budget> targetBudget = budgetService.findBudgetByCategoryAndDate(targetTransaction.getCategory(),
+					targetTransaction.getDate());
+
+			if (targetTransaction.getType().equals("Income")) {
+				targetAccount.setBalance(targetAccount.getBalance() - targetTransaction.getAmount());
+				logger.info("Account '" + targetAccount.getAccountName() + "' balance updated in database.");
+			} else if (targetTransaction.getType().equals("Expense")) {
+				targetAccount.setBalance(targetAccount.getBalance() + targetTransaction.getAmount());
+				logger.info("Account '" + targetAccount.getAccountName() + "' balance updated in database.");
+			}
+
+			if (!targetBudget.isEmpty()) {
+				if (targetTransaction.getDate().compareTo(targetBudget.get(0).getStartDate()) >= 0
+						&& targetTransaction.getDate().compareTo(targetBudget.get(0).getEndDate()) <= 0) {
+
+					targetBudget.get(0)
+							.setActualSpending(targetBudget.get(0).getActualSpending() - targetTransaction.getAmount());
+					logger.info("Budget for category '" + targetTransaction.getCategory().getCategoryName()
+							+ "' updated in database.");
+				}
+			}
+
+		}
+		transactionService.deleteTransactionById(transactionId);
+		return ("redirect:/dashboard/transactions");
+	}
 }

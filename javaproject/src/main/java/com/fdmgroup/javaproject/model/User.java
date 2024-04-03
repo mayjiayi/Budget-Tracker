@@ -6,14 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 /**
  * Represents the Users in the budgetTracker.
  */
 @Entity
 @Table(name = "Users")
 public class User {
-	
+
 	// attributes
 	@Id
 	@GeneratedValue
@@ -29,69 +28,82 @@ public class User {
 	private String firstName;
 	@Column(name = "LAST_NAME")
 	private String lastName;
-	
+
 	// constructors
 	public User(String username, String password, String email, String firstName, String lastName) {
 		super();
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		setUsername(username);
+		setPassword(password);
+		setEmail(email);
+		setFirstName(firstName);
+		setLastName(lastName);
 	}
-	
-	
 
-	public User() {}
-	
+	public User() {
+	}
+
 	// behaviors
-	
+
 	/**
 	 * Updates User's username, password, email, first name and last name.
 	 * 
-	 * @param updatedUser 	user object with the same userId but with updated attributes.
+	 * @param updatedUser user object with the same userId but with updated
+	 *                    attributes.
 	 */
 	public void update(User updatedUser) {
 		setUsername(updatedUser.getUsername());
 		setPassword(updatedUser.getPassword());
 		setEmail(updatedUser.getEmail());
 	}
-	
+
 	// getters and setters
 	public int getUserID() {
 		return userID;
 	}
+
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		String capFirstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+		this.firstName = capFirstName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		String capLastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
+		this.lastName = capLastName;
 	}
 }

@@ -82,15 +82,18 @@ public class BudgetService {
 	}
 
 	public List<Budget> getBudgetsByUserByMonthAndYear(Integer month, Integer year, User user) {
-		List<Budget> budgetList = budgetRepo.findByUser(user);
+		List<Budget> budgetList = getBudgetsByMonthAndYear(month, year);
 		List<Budget> userBudgetList = new ArrayList<>();
 
 		for (Budget budget : budgetList) {
-			if (budget.getUser().equals(user)) {
+			if (budget.getUser().getUserID() == user.getUserID()) {
 				userBudgetList.add(budget);
 			}
 		}
-
 		return userBudgetList;
+	}
+
+	public void deleteBudgetById(int id) {
+		budgetRepo.deleteById(id);
 	}
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,6 +37,9 @@
 				<label for="username">Username:</label>
 				<input type="text" name="username" placeholder="Username" required>
 			</div>
+            <div class= "error-message" th:if="${registererror}">
+                <p>Sorry, username has been taken.</p>
+            </div>
 			<div class="form-group">
 				<label for="password">Password:</label>
 				<input type="password" name="password" placeholder="Password" required>

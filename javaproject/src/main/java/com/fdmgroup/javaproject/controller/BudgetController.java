@@ -85,4 +85,9 @@ public class BudgetController {
 		}
 	}
 
+	@PostMapping("/dashboard/budgets/delete")
+	public String deleteBudget(int budgetId) {
+		budgetService.deleteBudgetById(budgetId);
+		return ("redirect:/dashboard/budgets");
+	}
 }

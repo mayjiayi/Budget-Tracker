@@ -22,6 +22,7 @@
               <li><a href="/dashboard/transactions"><i class="fa-solid fa-list"></i>Transactions</a></li>
               <li><a href="/dashboard/accounts"><i class="fa-solid fa-wallet"></i>Accounts</a></li>
               <li><a href="/dashboard/budgets"><i class="fa-solid fa-calculator"></i>Budgets</a></li>
+              <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i>Log Out</a></li>
           </ul>
       </div>
   
@@ -48,21 +49,29 @@
   	                <th>Account</th>
   	                <th>Category</th>
   	                <th>Amount</th>
+                    <th>Description</th>
   	                <th>Date</th>
+                    <th> </th>
   	                <!-- Add more table headers if needed -->
   	            </tr>
   	        </thead>
   	        <tbody>
                 <tr th:if="${#lists.isEmpty(transactions)}">
-                    <td colspan="4">No transactions available.</td>
+                    <td colspan="6">No transactions available.</td>
                 </tr>
   	            <!-- Iterate over accounts data and display each account -->
   	            <tr th:each="transaction : ${transactions}" th:data-account-id="${transaction.account.accountID}">
   	                <td th:text="${transaction.account.accountName}">Account</td>
   	                <td th:text="${transaction.category.categoryName}">Category</td>
   	                <td th:text="${transaction.amount}">Amount</td>
+                    <td th:text="${transaction.description}">Description</td>
   	                <td th:text="${transaction.date}">Date</td>
-  	                <!-- Add more table cells for additional account properties -->
+  	                <td>
+                        <form action="/dashboard/transactions/delete" method="post">
+                            <input type="hidden" name="transactionId" th:value="${transaction.transactionID}"/> 
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </td>
   	            </tr>
   	        </tbody>
       	</table>

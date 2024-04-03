@@ -111,4 +111,12 @@ public class TransactionService {
 
 		return transactionRepo.findByAccount(account);
 	}
+
+	public void deleteTransactionById(int id) {
+		transactionRepo.deleteById(id);
+	}
+
+	public Optional<Transaction> findTransactionById(int id) {
+		return transactionRepo.findById(id);
+	}
 }

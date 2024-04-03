@@ -20,6 +20,10 @@ body {
   
 }  
 
+.error-message {
+	color: red;
+}
+
 .container {
   background-color: #222;
   padding: 30px;

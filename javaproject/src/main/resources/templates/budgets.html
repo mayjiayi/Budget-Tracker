@@ -23,6 +23,7 @@
               <li><a href="/dashboard/transactions"><i class="fa-solid fa-list"></i>Transactions</a></li>
               <li><a href="/dashboard/accounts"><i class="fa-solid fa-wallet"></i>Accounts</a></li>
               <li><a href="/dashboard/budgets"><i class="fa-solid fa-calculator"></i>Budgets</a></li>
+              <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i>Log Out</a></li>
           </ul>
       </div>
   
@@ -66,18 +67,26 @@
                     <th>Actual Spending</th>
                     <th>Start</th>
                     <th>End</th>
+                    <th> </th>
 	                <!-- Add more table headers if needed -->
 	            </tr>
 	        </thead>
 	        <tbody>
-	            <!-- Iterate over accounts data and display each account -->
+	            <tr th:if="${#lists.isEmpty(budgets)}">
+                    <td colspan="6">No Budgets available.</td>
+                </tr>
 	            <tr th:each="budget : ${budgets}">
 	                <td th:text="${budget.category.categoryName}">Category</td>
 	                <td th:text="${budget.targetAmount}">Budget</td>
                     <td th:text="${budget.actualSpending}">Actual Spending</td>
                     <td th:text="${budget.startDate}">Start</td>
                     <td th:text="${budget.endDate}">End</td>
-	                <!-- Add more table cells for additional account properties -->
+	                <td>
+                        <form action="/dashboard/budgets/delete" method="post">
+                            <input type="hidden" name="budgetId" th:value="${budget.budgetID}"/> 
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </td>
 	            </tr>
 	        </tbody>
     	</table>

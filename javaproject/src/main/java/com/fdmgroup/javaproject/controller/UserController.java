@@ -39,7 +39,7 @@ public class UserController {
 
 	@PostMapping("/register")
 	public String processRegistration(@RequestParam String username, @RequestParam String password,
-			@RequestParam String email, @RequestParam String firstName, @RequestParam String lastName) {
+			@RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, Model model) {
 		logger.info("Registering User '" + username + "' ...");
 		logger.info("Username : " + username + " | Password : " + password + " | Email : " + email);
 
@@ -49,6 +49,7 @@ public class UserController {
 			return ("redirect:/login");
 		} else {
 			logger.warn("Unable to register user '" + username + "'.");
+			model.addAttribute("registererror", true);
 			return ("register");
 		}
 	}
@@ -79,6 +80,14 @@ public class UserController {
 
 			return "redirect:/dashboard/" + currentUserId;
 		}
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		// Invalidate the session to log out
+		logger.info("User logged out.");
+		session.invalidate();
+		return "redirect:/login";
 	}
 
 }
