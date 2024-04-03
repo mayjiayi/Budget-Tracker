@@ -102,63 +102,12 @@ label #cancel{
 	margin-left: 250px;
 }
 
-section {
-	transition: all .5s;
-}
-
-section {
-	padding: 2rem;
-}
-
-form {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-}
-
-form input, button, select {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	margin-bottom: 5px;
-	height: 42px;
-	font-family: 'Rubik', sans-serif;
-	font-size: 1rem;
-}
-
-form button {
-	background-color: grey;
-	color: white;
-	font-size: 0.75rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-	cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background-color: #c0c0c0;
-}
-
-
-
-form label {
-	font-size: 0.75rem;
-	font-weight: 600;
-	text-transform: uppercase;
-}
-
-form div:first-child {
-	flex-basis: 100%;
-}
-
-form div:nth-child(n + 1){
-	flex-basis: calc(50% - 5px);
-}
-
-h1 {
-	font-size: 3rem;
+.dashboard-section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
 .dashboard-header {
@@ -166,16 +115,36 @@ h1 {
     margin-bottom: 20px;
 }
 
-.summary-section {
-    margin-bottom: 20px;
+.summary-container {
+    display: flex;
+    justify-content: space-around;
 }
 
-.summary-item {
-    margin-bottom: 10px;
+.account-summary, .budget-summary {
+    width: 45%;
 }
 
-.total-balance-section {
-    margin-top: 20px;
+.account-summary table, .budget-summary table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.account-summary th, .account-summary td, .budget-summary th, .budget-summary td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.account-summary th {
+    background-color: #f2f2f2;
+}
+
+.budget-summary th {
+    background-color: #f9f9f9;
+}
+
+.budget-summary tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 

@@ -46,27 +46,34 @@ public class TransactionController {
 	public String transactions(@RequestParam(name = "accountId", required = false) Integer accountId, Model model,
 			HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		List<Transaction> transactions;
 
-		if (accountId != null) {
-			Account targetAccount = accountService.findById(accountId);
-			transactions = transactionService.findTransactionsForAccount(targetAccount);
+		if (user != null) {
+			List<Transaction> transactions;
+
+			if (accountId != null) {
+				Account targetAccount = accountService.findById(accountId);
+				transactions = transactionService.findTransactionsForAccount(targetAccount);
+			} else {
+				transactions = transactionService.getAllByUser(user);
+			}
+
+			List<Category> categories = categoryService.getAllCategories();
+			List<Account> accounts = accountService.getAllByUser(user);
+
+			model.addAttribute("transactions", transactions);
+			model.addAttribute("categories", categories);
+			model.addAttribute("accounts", accounts);
+
+			logger.info("added user's transactions to model attribute");
+			logger.info("added user's categories to model attribute");
+			logger.info("added user's accounts to model attribute");
+
+			return ("transactions");
 		} else {
-			transactions = transactionService.getAllByUser(user);
+			model.addAttribute("timeout", true);
+			return "redirect:/login";
 		}
 
-		List<Category> categories = categoryService.getAllCategories();
-		List<Account> accounts = accountService.getAllByUser(user);
-
-		model.addAttribute("transactions", transactions);
-		model.addAttribute("categories", categories);
-		model.addAttribute("accounts", accounts);
-
-		logger.info("added user's transactions to model attribute");
-		logger.info("added user's categories to model attribute");
-		logger.info("added user's accounts to model attribute");
-
-		return ("transactions");
 	}
 
 	@PostMapping("/dashboard/transactions")

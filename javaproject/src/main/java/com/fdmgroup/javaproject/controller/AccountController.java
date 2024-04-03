@@ -32,10 +32,16 @@ public class AccountController {
 	public String accounts(Model model, HttpSession session) {
 
 		User user = (User) session.getAttribute("user");
-		List<Account> accounts = accountService.getAllByUser(user);
-		model.addAttribute("accounts", accounts);
-		logger.info("added user's accounts in model attribute");
-		return ("accounts");
+
+		if (user != null) {
+			List<Account> accounts = accountService.getAllByUser(user);
+			model.addAttribute("accounts", accounts);
+			logger.info("added user's accounts in model attribute");
+			return ("accounts");
+		} else {
+			model.addAttribute("timeout", true);
+			return "redirect:/login";
+		}
 	}
 
 	@PostMapping("/dashboard/accounts")

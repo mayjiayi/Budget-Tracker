@@ -1,7 +1,7 @@
 package com.fdmgroup.javaproject.controller;
 
 import java.time.YearMonth;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fdmgroup.javaproject.model.Budget;
 import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.service.AccountService;
+import com.fdmgroup.javaproject.service.BudgetService;
 import com.fdmgroup.javaproject.service.TransactionService;
 
 import jakarta.servlet.http.HttpSession;
@@ -25,30 +27,33 @@ public class DashboardController {
 	private TransactionService transactionService;
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private BudgetService budgetService;
 
 	@GetMapping("/dashboard/{id}")
-	public String dashboard(@PathVariable("id") String userid, @RequestParam(required = false) Integer month,
-			@RequestParam(required = false) Integer year, HttpSession session, Model model) {
+	public String dashboard(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 
 		if (user != null) {
-			YearMonth selectedMonth = YearMonth.now();
-			if (month != null && year != null) {
-				selectedMonth = YearMonth.of(year, month);
-			}
+			YearMonth currentMonth = YearMonth.now();
+			int month = currentMonth.getMonthValue();
+			int year = currentMonth.getYear();
+
+			List<Budget> budgets = budgetService.getBudgetsByUserByMonthAndYear(month, year, user);
 
 			double totalBalance = accountService.getTotalAccountBalanceForUser(user);
+			double initialBalance = accountService.getInitialAccountBalanceForUser(user);
+			double amountDeducted = initialBalance - totalBalance;
 
-			Map<String, Double> totals = transactionService.getTotalTransactionsByMonthAndType(user, selectedMonth);
-
-			model.addAttribute("totals", totals);
-			model.addAttribute("selectedMonth", selectedMonth);
 			model.addAttribute("user", user);
+			model.addAttribute("budgets", budgets);
 			model.addAttribute("totalBalance", totalBalance);
+			model.addAttribute("initialBalance", initialBalance);
+			model.addAttribute("amountDeducted", amountDeducted);
 
 			return "dashboard";
 		} else {
-			// User is not logged in, redirect to login page
+			model.addAttribute("timeout", true);
 			return "redirect:/login";
 		}
 	}

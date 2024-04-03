@@ -38,6 +38,10 @@
 			  <div class= "error-message" th:if="${error}">
 			      <p>Sorry, unrecognised username or password.</p>
 			  </div>
+        
+              <div class= "error-message" th:if="${timeout}">
+                  <p>Session timeout. Please login again.</p>
+              </div>
 			
 			  <div class="form-submit">
 			    <input type="submit" value="Login">

@@ -39,24 +39,30 @@ public class BudgetController {
 			Model model, HttpSession session) {
 
 		User user = (User) session.getAttribute("user");
-		List<Budget> budgets;
-		if (month != null && year != null) {
-			budgets = budgetService.getBudgetsByMonthAndYear(month, year);
+
+		if (user != null) {
+			List<Budget> budgets;
+			if (month != null && year != null) {
+				budgets = budgetService.getBudgetsByUserByMonthAndYear(month, year, user);
+			} else {
+				budgets = budgetService.getAllByUser(user);
+			}
+
+			List<Category> categories = categoryService.getAllCategories();
+			List<Account> accounts = accountService.getAllByUser(user);
+
+			model.addAttribute("budgets", budgets);
+			model.addAttribute("categories", categories);
+			model.addAttribute("accounts", accounts);
+
+			logger.info("added user's budgets in model attribute");
+			logger.info("added user's categories in model attribute");
+			logger.info("added user's accounts in model attribute");
+			return ("budgets");
 		} else {
-			budgets = budgetService.getAllByUser(user);
+			model.addAttribute("timeout", true);
+			return "redirect:/login";
 		}
-
-		List<Category> categories = categoryService.getAllCategories();
-		List<Account> accounts = accountService.getAllByUser(user);
-
-		model.addAttribute("budgets", budgets);
-		model.addAttribute("categories", categories);
-		model.addAttribute("accounts", accounts);
-
-		logger.info("added user's budgets in model attribute");
-		logger.info("added user's categories in model attribute");
-		logger.info("added user's accounts in model attribute");
-		return ("budgets");
 	}
 
 	@PostMapping("/dashboard/budgets")

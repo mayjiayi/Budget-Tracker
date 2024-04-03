@@ -1,6 +1,7 @@
 package com.fdmgroup.javaproject.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +79,18 @@ public class BudgetService {
 	public List<Budget> findBudgetByCategoryAndDate(Category category, LocalDate date) {
 		return budgetRepo.findByCategoryCategoryIDAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
 				category.getCategoryID(), date, date);
+	}
+
+	public List<Budget> getBudgetsByUserByMonthAndYear(Integer month, Integer year, User user) {
+		List<Budget> budgetList = budgetRepo.findByUser(user);
+		List<Budget> userBudgetList = new ArrayList<>();
+
+		for (Budget budget : budgetList) {
+			if (budget.getUser().equals(user)) {
+				userBudgetList.add(budget);
+			}
+		}
+
+		return userBudgetList;
 	}
 }

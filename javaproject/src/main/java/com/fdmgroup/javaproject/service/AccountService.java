@@ -100,4 +100,13 @@ public class AccountService {
 	public void updateAccount(Account account) {
 		accountRepo.save(account);
 	}
+
+	public double getInitialAccountBalanceForUser(User user) {
+		List<Account> accountList = accountRepo.findByUser(user);
+		double initialBalance = 0.0;
+		for (Account account : accountList) {
+			initialBalance += account.getInitialBalance();
+		}
+		return initialBalance;
+	}
 }
