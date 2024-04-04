@@ -1,0 +1,5 @@
+com.fdmgroup.javaproject
+com.fdmgroup.javaproject.controller
+com.fdmgroup.javaproject.model
+com.fdmgroup.javaproject.repository
+com.fdmgroup.javaproject.service

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.fdmgroup.javaproject.controller"},{"l":"com.fdmgroup.javaproject.model"},{"l":"com.fdmgroup.javaproject.repository"},{"l":"com.fdmgroup.javaproject.service"}];updateSearchResults();
