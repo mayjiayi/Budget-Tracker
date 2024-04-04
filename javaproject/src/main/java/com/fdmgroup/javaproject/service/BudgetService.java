@@ -67,6 +67,13 @@ public class BudgetService {
 		return budgetList;
 	}
 
+	/**
+	 * Returns a list of budgets filtered by month and year
+	 * 
+	 * @param month
+	 * @param year
+	 * @return list of budgets
+	 */
 	public List<Budget> getBudgetsByMonthAndYear(Integer month, Integer year) {
 		// Get the start and end dates of the provided month and year
 		LocalDate startDate = LocalDate.of(year, month, 1);
@@ -76,11 +83,26 @@ public class BudgetService {
 		return budgetRepo.findByStartDateBetween(startDate, endDate);
 	}
 
+	/**
+	 * Returns a list of budget filtered by Category and Date
+	 * 
+	 * @param category
+	 * @param date
+	 * @return list of budgets
+	 */
 	public List<Budget> findBudgetByCategoryAndDate(Category category, LocalDate date) {
 		return budgetRepo.findByCategoryCategoryIDAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
 				category.getCategoryID(), date, date);
 	}
 
+	/**
+	 * Returns a list of budget filtered by user, month and year
+	 * 
+	 * @param month
+	 * @param year
+	 * @param user
+	 * @return list of budgets
+	 */
 	public List<Budget> getBudgetsByUserByMonthAndYear(Integer month, Integer year, User user) {
 		List<Budget> budgetList = getBudgetsByMonthAndYear(month, year);
 		List<Budget> userBudgetList = new ArrayList<>();
@@ -93,6 +115,11 @@ public class BudgetService {
 		return userBudgetList;
 	}
 
+	/**
+	 * Removes budget from database
+	 * 
+	 * @param id
+	 */
 	public void deleteBudgetById(int id) {
 		budgetRepo.deleteById(id);
 	}

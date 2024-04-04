@@ -107,15 +107,32 @@ public class TransactionService {
 		return transactionRepo.findByUserAndMonthAndYear(user, month, year);
 	}
 
+	/**
+	 * Retrieves a list of transactions by account
+	 * 
+	 * @param account
+	 * @return list of transactions
+	 */
 	public List<Transaction> findTransactionsForAccount(Account account) {
 
 		return transactionRepo.findByAccount(account);
 	}
 
+	/**
+	 * Removes transaction from database by id
+	 * 
+	 * @param id
+	 */
 	public void deleteTransactionById(int id) {
 		transactionRepo.deleteById(id);
 	}
 
+	/**
+	 * Retrieves transaction from database by id
+	 * 
+	 * @param id
+	 * @return optional of transaction
+	 */
 	public Optional<Transaction> findTransactionById(int id) {
 		return transactionRepo.findById(id);
 	}

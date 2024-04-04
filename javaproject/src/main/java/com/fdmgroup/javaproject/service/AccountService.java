@@ -93,7 +93,7 @@ public class AccountService {
 	}
 
 	/**
-	 * updates account into database
+	 * Updates account into database
 	 * 
 	 * @param account
 	 */
@@ -101,6 +101,12 @@ public class AccountService {
 		accountRepo.save(account);
 	}
 
+	/**
+	 * Returns the total initial account balance for a user
+	 * 
+	 * @param user
+	 * @return double
+	 */
 	public double getInitialAccountBalanceForUser(User user) {
 		List<Account> accountList = accountRepo.findByUser(user);
 		double initialBalance = 0.0;
@@ -110,6 +116,11 @@ public class AccountService {
 		return initialBalance;
 	}
 
+	/**
+	 * Removes the account from the database
+	 * 
+	 * @param id
+	 */
 	public void deleteAccountById(int id) {
 		accountRepo.deleteById(id);
 	}
