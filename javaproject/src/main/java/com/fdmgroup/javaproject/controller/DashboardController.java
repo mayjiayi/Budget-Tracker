@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fdmgroup.javaproject.model.Budget;
+import com.fdmgroup.javaproject.model.Transaction;
 import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.service.AccountService;
 import com.fdmgroup.javaproject.service.BudgetService;
@@ -40,16 +41,26 @@ public class DashboardController {
 			int year = currentMonth.getYear();
 
 			List<Budget> budgets = budgetService.getBudgetsByUserByMonthAndYear(month, year, user);
+			List<Transaction> transactions = transactionService.getAllByUser(user);
 
 			double totalBalance = accountService.getTotalAccountBalanceForUser(user);
 			double initialBalance = accountService.getInitialAccountBalanceForUser(user);
-			double amountDeducted = initialBalance - totalBalance;
+			double amountDeducted = 0;
+			double amountAdded = 0;
+			for (Transaction transaction : transactions) {
+				if (transaction.getType().equals("Expense")) {
+					amountDeducted += transaction.getAmount();
+				} else if (transaction.getType().equals("Income")) {
+					amountAdded += transaction.getAmount();
+				}
+			}
 
 			model.addAttribute("user", user);
 			model.addAttribute("budgets", budgets);
 			model.addAttribute("totalBalance", totalBalance);
 			model.addAttribute("initialBalance", initialBalance);
 			model.addAttribute("amountDeducted", amountDeducted);
+			model.addAttribute("amountAdded", amountAdded);
 
 			return "dashboard";
 		} else {
