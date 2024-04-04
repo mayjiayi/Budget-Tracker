@@ -83,10 +83,6 @@ public class Account {
 	}
 
 	public void setBalance(double balance) {
-//		BigDecimal bd = BigDecimal.valueOf(balance);
-//	    bd = bd.setScale(2, RoundingMode.HALF_UP);
-//		this.balance = bd.doubleValue();
-
 		DecimalFormat df = new DecimalFormat("#.##");
 		balance = Double.valueOf(df.format(balance));
 		this.balance = balance;

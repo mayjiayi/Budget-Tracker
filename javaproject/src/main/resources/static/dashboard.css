@@ -1,6 +1,21 @@
 body {
 	font-family: 'Rubik', sans-serif;
 }
+
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://cdn.pixabay.com/photo/2017/10/10/12/53/finance-2837085_1280.png');
+    background-size: cover;
+    opacity: 0.5; /* Adjust the opacity value (0.5) to control the level of fading */
+    z-index: -1; /* Ensure the pseudo-element is behind other content */
+}
+
 *{
 	margin: 0;
 	padding: 0;
