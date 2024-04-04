@@ -63,7 +63,7 @@
   	            <tr th:each="transaction : ${transactions}" th:data-account-id="${transaction.account.accountID}">
   	                <td th:text="${transaction.account.accountName}">Account</td>
   	                <td th:text="${transaction.category.categoryName}">Category</td>
-  	                <td th:text="${transaction.amount}">Amount</td>
+  	                <td class="price-element" th:text="${transaction.amount}">Amount</td>
                     <td th:text="${transaction.description}">Description</td>
   	                <td th:text="${transaction.date}">Date</td>
   	                <td>
@@ -130,6 +130,13 @@
           </div>
       </form>
     </div>
-    </section>	
+    </section>
+    <script>
+      const priceElements = document.querySelectorAll('.price-element');
+      priceElements.forEach(element => {
+          const price = parseFloat(element.textContent);
+          element.textContent = '$' + price.toFixed(2);
+      });
+    </script>
 </body>
 </html>

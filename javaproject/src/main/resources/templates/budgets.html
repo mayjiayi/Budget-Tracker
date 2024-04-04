@@ -77,8 +77,8 @@
                 </tr>
 	            <tr th:each="budget : ${budgets}">
 	                <td th:text="${budget.category.categoryName}">Category</td>
-	                <td th:text="${budget.targetAmount}">Budget</td>
-                    <td th:text="${budget.actualSpending}">Actual Spending</td>
+	                <td class="price-element" th:text="${budget.targetAmount}">Budget</td>
+                    <td class="price-element" th:text="${budget.actualSpending}">Actual Spending</td>
                     <td th:text="${budget.startDate}">Start</td>
                     <td th:text="${budget.endDate}">End</td>
 	                <td>
@@ -122,5 +122,13 @@
 		</form>
     </div>
     </section>
+    
+    <script>
+      const priceElements = document.querySelectorAll('.price-element');
+      priceElements.forEach(element => {
+          const price = parseFloat(element.textContent);
+          element.textContent = '$' + price.toFixed(2);
+      });
+    </script>
 	</body>
 </html>

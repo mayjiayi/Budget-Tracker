@@ -44,15 +44,15 @@
                         <tbody>
                             <tr>
                                 <th>Initial Balance</th>
-                                <td th:text="${initialBalance}">Initial Balance</td>
+                                <td class="price-element" th:text="${initialBalance}">Initial Balance</td>
                             </tr>
                             <tr>
                                 <th>Amount Deducted</th>
-                                <td th:text="${amountDeducted}">Amount Deducted</td>
+                                <td class="price-element" th:text="${amountDeducted}">Amount Deducted</td>
                             </tr>
                             <tr>
                                 <th>Current Balance</th>
-                                <td th:text="${totalBalance}">Current Balance</td>
+                                <td class="price-element" th:text="${totalBalance}">Current Balance</td>
                             </tr>
                         </tbody>
                     </table>
@@ -74,13 +74,22 @@
                         <tbody>
                             <tr th:each="budget : ${budgets}">
                                 <td th:text="${budget.category.categoryName}">Category</td>
-                                <td th:text="${budget.targetAmount}">Budget</td>
-                                <td th:text="${budget.actualSpending}">Actual Spending</td>
+                                <td class="price-element" th:text="${budget.targetAmount}">Budget</td>
+                                <td class="price-element" th:text="${budget.actualSpending}">Actual Spending</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
+        
+        <script>
+          const priceElements = document.querySelectorAll('.price-element');
+          priceElements.forEach(element => {
+              const price = parseFloat(element.textContent);
+              element.textContent = '$' + price.toFixed(2);
+          });
+        </script>
+        
 	</body>
 </html>
