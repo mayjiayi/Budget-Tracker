@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fdmgroup.javaproject.model.Account;
+import com.fdmgroup.javaproject.model.Budget;
+import com.fdmgroup.javaproject.model.Transaction;
 import com.fdmgroup.javaproject.model.User;
 import com.fdmgroup.javaproject.service.AccountService;
+import com.fdmgroup.javaproject.service.BudgetService;
+import com.fdmgroup.javaproject.service.TransactionService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,6 +30,11 @@ public class AccountController {
 
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private TransactionService transactionService;
+	@Autowired
+	private BudgetService budgetService;
+
 	private static final Logger logger = LoggerFactory.getLogger(Account.class);
 
 	@GetMapping("/dashboard/accounts")
@@ -60,5 +69,28 @@ public class AccountController {
 			logger.info("Unable to create '" + accountName);
 			return ("redirect:/dashboard/accounts");
 		}
+	}
+
+	@PostMapping("/dashboard/accounts/delete")
+	public String deleteAccount(int accountId) {
+		Account account = accountService.findById(accountId);
+		List<Transaction> transactionList = transactionService.findTransactionsForAccount(account);
+
+		for (Transaction transaction : transactionList) {
+			List<Budget> targetBudget = budgetService.findBudgetByCategoryAndDate(transaction.getCategory(),
+					transaction.getDate());
+			if (!targetBudget.isEmpty()) {
+				if (transaction.getDate().compareTo(targetBudget.get(0).getStartDate()) >= 0
+						&& transaction.getDate().compareTo(targetBudget.get(0).getEndDate()) <= 0) {
+					targetBudget.get(0)
+							.setActualSpending(targetBudget.get(0).getActualSpending() - transaction.getAmount());
+					logger.info("Budget for category '" + transaction.getCategory().getCategoryName()
+							+ "' updated in database.");
+				}
+			}
+			transactionService.deleteTransactionById(transaction.getTransactionID());
+		}
+		accountService.deleteAccountById(accountId);
+		return ("redirect:/dashboard/accounts");
 	}
 }

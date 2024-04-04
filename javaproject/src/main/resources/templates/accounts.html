@@ -28,21 +28,29 @@
         <header> header </header>
   
 		<section>
-        <h1>User Account</h1>
+        <h1>Your Accounts</h1>
 		<table>
 	        <thead>
 	            <tr>
 	                <th>Account Name</th>
 	                <th>Balance</th>
+                    <th> </th>
 	                <!-- Add more table headers if needed -->
 	            </tr>
 	        </thead>
 	        <tbody>
-	            <!-- Iterate over accounts data and display each account -->
+	            <tr th:if="${#lists.isEmpty(accounts)}">
+                    <td colspan="3">No Accounts available.</td>
+                </tr>
 	            <tr th:each="account : ${accounts}" th:attr="onclick='redirectToTransactions(\'' + ${account.accountID} + '\')'">
-	                <td th:text="${account.accountName}">Account Name</td>
-	                <td class="price-element" th:text="${account.balance}">Balance</td>
-	                <!-- Add more table cells for additional account properties -->
+    	            <td th:text="${account.accountName}">Account Name</td>
+    	            <td class="price-element" th:text="${account.balance}">Balance</td>
+    	            <td>
+                      <form action="/dashboard/accounts/delete" method="post">
+                         <input type="hidden" name="accountId" th:value="${account.accountID}"/> 
+                         <input type="submit" value="Delete"/>
+                      </form>
+                  </td>
 	            </tr>
 	        </tbody>
     	</table>

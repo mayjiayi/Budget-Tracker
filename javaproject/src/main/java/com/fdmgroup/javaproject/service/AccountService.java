@@ -109,4 +109,8 @@ public class AccountService {
 		}
 		return initialBalance;
 	}
+
+	public void deleteAccountById(int id) {
+		accountRepo.deleteById(id);
+	}
 }

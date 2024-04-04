@@ -114,7 +114,7 @@ label #cancel{
 }
 
 section {
-	transition: all .5s;
+	transition: all .5s ease;
 }
 
 table {
