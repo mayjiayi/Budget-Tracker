@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration>
+	
+	<Properties>
+	
+		<Property name="basePath">src/main/logs</Property>
+		
+	</Properties>
+	
+	
+	
+	<Appenders>
+        <RollingFile name="OutputFile" fileName="src/main/logs/logging.log" append="true" filePattern="src/main/logs/output-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+			<Policies>
+               <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+		</RollingFile>
+    
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    
+    <Loggers>
+        <Root level="info"></Root>
+        
+        <Logger name="com.fdmgroup.javaproject" level="debug">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="OutputFile" />
+		</Logger>
+    </Loggers>
+    
+</Configuration>

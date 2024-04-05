@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -41,7 +41,7 @@ public class TransactionController {
 	@Autowired
 	private BudgetService budgetService;
 
-	private static final Logger logger = LoggerFactory.getLogger(Transaction.class);
+	private static final Logger logger = LogManager.getLogger(TransactionController.class);
 
 	@GetMapping("/dashboard/transactions")
 	public String transactions(@RequestParam(name = "accountId", required = false) Integer accountId, Model model,

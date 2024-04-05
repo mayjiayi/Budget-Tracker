@@ -3,8 +3,8 @@ package com.fdmgroup.javaproject.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ public class BudgetController {
 	@Autowired
 	private AccountService accountService;
 
-	private static final Logger logger = LoggerFactory.getLogger(Budget.class);
+	private static final Logger logger = LogManager.getLogger(BudgetController.class);
 
 	@GetMapping("/dashboard/budgets")
 	public String budgets(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year,
